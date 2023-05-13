@@ -116,16 +116,35 @@ header {
     justify-content: space-between;
   }
 
-.form-container{
-  padding-top: 75px;
-  padding-left: 350px;
-  padding-right: 350px;
-  padding-bottom: 75px;
-  margin-top: 10px;
-  margin-bottom: 10px;
-  font-size: larger;
-}
-
+  .form-container {
+    padding-top: 75px;
+    padding-left: 350px;
+    padding-right: 350px;
+    padding-bottom: 75px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    font-size: larger;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .form-container > div {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  
+  .form-container label {
+    width: 150px;
+    margin-right: 10px;
+    display: inline-block;
+  }
+  
+  .form-container input,
+  .form-container select,
+  .form-container .react-datepicker-wrapper {
+    flex: 1;
+  }
 .text-red-500 {
   color: #EF4444;
 }

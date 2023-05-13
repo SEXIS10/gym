@@ -24,6 +24,23 @@ const GymSystem: React.FC = () => {
     fetchUsers();
   }, []);
 
+  const handleUserClick = (user: User) => {
+    setSelectedUser(user);
+  };
+
+  const deleteUser = async (userId: number) => {
+    const confirmDelete = window.confirm("Are you sure you want to delete this user?");
+    if (confirmDelete) {
+      try {
+        await axios.delete(`http://localhost:8080/deleteUser/${userId}`);
+        console.log("User deleted successfully!");
+        window.location.reload();
+      } catch (error) {
+        console.error("Error deleting user:", error);
+      }
+    }
+  };
+
   const renderUserList = (): JSX.Element[] => {
     let filteredUsers: User[] = [];
     switch (selectedView) {
@@ -39,33 +56,20 @@ const GymSystem: React.FC = () => {
       default:
         filteredUsers = users;
     }
-    const handleUserClick = (user: User) => {
-      setSelectedUser(user);
-    };
 
-    return filteredUsers.map((user, index) => (
+    return filteredUsers.map((user) => (
       <div className="datas" key={user.id}>
         <p className="cursor-pointer" onClick={() => handleUserClick(user)}>{user.name}</p>
         <p className="cursor-pointer" onClick={() => handleUserClick(user)}>{user.status ? "Active" : "Passive"}</p>
         <p className="cursor-pointer" onClick={() => handleUserClick(user)}>{user.endDate}</p>
         <button
           className="ml-2 text-red-500 cursor-pointer kuka"
-          onClick={() => deleteUser(users[index].id)}
+          onClick={() => deleteUser(user.id)}
         >
           <AiOutlineDelete />
         </button>
       </div>
     ));
-  };
-
-  const deleteUser = async (userId: number) => {
-    try {
-      await axios.delete(`http://localhost:8080/deleteUser/${userId}`);
-      console.log("User deleted successfully!");
-      window.location.reload();
-    } catch (error) {
-      console.error("Error deleting user:", error);
-    }
   };
 
   return (
@@ -81,7 +85,7 @@ const GymSystem: React.FC = () => {
         />
         <div className="main-container">
           <main className="lista">
-            <UserList users={users} renderUserList={renderUserList} deleteUser={deleteUser} />
+          <UserList users={users} renderUserList={renderUserList} deleteUser={deleteUser}></UserList>
           </main>
         </div>
       </div>
